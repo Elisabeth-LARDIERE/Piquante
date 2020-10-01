@@ -8,4 +8,3 @@ MongoDb
 Le code frontend est disponible ici :
 https://github.com/OpenClassrooms-Student-Center/dwj-projet6
 
- ad
