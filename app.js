@@ -7,6 +7,9 @@ const mongoose = require('mongoose');
 const path = require('path');
 const helmet = require('helmet');
 
+// importation et configuration du module dotenv
+require('dotenv').config()
+
 // importation des routeurs sauce et utilisateur
 const saucesRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
@@ -15,8 +18,8 @@ const userRoutes = require('./routes/user');
 // création de l'application express
 const app = express();
 
-// connexion au cluster MongoDB
-mongoose.connect('mongodb+srv://spadassine:uJ1hL9GFJ00lkjNr@piquante.xampq.mongodb.net/<dbname>?retryWrites=true&w=majority',
+// connexion au cluster MongoDB - masquage des données de connexion avec dotenv
+mongoose.connect('mongodb+srv://'+ process.env.DB_USER +':'+ process.env.DB_PASSWORD +'@piquante.xampq.mongodb.net/<dbname>?retryWrites=true&w=majority',
     { useNewUrlParser: true,
         useUnifiedTopology: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))
