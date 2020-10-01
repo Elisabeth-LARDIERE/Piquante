@@ -1,11 +1,11 @@
 // CONTROLLER UTILISATEUR - contient la logique métier des routes utilisateur
 
-// importation des packages bcrypt, jwt, email-validator et password-validator
+// importation des packages bcrypt, jwt, email-validator, password-validator et mongo-sanitize
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const emailValidator = require('email-validator');
 const passwordValidator = require('password-validator');
-
+const sanitize = require('mongo-sanitize');
 
 // importation du modèle utilisateur
 const User = require('../models/User');
@@ -27,14 +27,14 @@ passwordSchema
 // exportation de la fonction qui va enregistrer un nouvel utilisateur
 exports.signup = (req, res, next) => {
 
-    // si l'adresse mail ou le mot de passe est invalide
-    if (!emailValidator.validate(req.body.email)|| !passwordSchema.validate(req.body.password)) {
+    // si l'adresse mail ou le mot de passe est invalide + sanitize inputs contre injections
+    if (!emailValidator.validate(sanitize(req.body.email)) || !passwordSchema.validate(sanitize(req.body.password))) {
         return res.status(401).json({message: 'Veuillez vérifier l adresse mail et le mot de passe. Le mot de passe doit contenir entre ' +
                 '8 et 60 caractères sans espace, et inclure au moins une majuscule, une minuscule et un chiffre'})
 
-        // si l'adresse mail et le mot de passe sont invalides
-    } else if(emailValidator.validate(req.body.email) && passwordSchema.validate(req.body.password)) {
-        bcrypt.hash(req.body.password, 10) // hachage du mot de pass
+        // si l'adresse mail et le mot de passe sont invalides + sanitize inputs contre injections
+    } else if(emailValidator.validate(sanitize(req.body.email)) && passwordSchema.validate(sanitize(req.body.password))) {
+        bcrypt.hash(req.body.password, 10) // hachage du mot de passe
 
             // création et enregistrement d'un nouvel utilisateur dans la bdd avec email et mot de passe crypté
             .then(hash => {
@@ -54,13 +54,13 @@ exports.signup = (req, res, next) => {
 // exportation de la fonction qui va connecter un utilisateur déjà enregistré
 exports.login = (req, res, next) => {
 
-    // vérification de la présence de l'utilisateur dans la bdd
-    User.findOne({email: req.body.email})
+    // vérification de la présence de l'utilisateur dans la bdd + sanitize inputs contre injections
+    User.findOne({email: sanitize(req.body.email)})
         .then(user => {
             if (!user) {
                 return res.status(401).json({message: 'Utilisateur non trouvé !'})
             }
-            bcrypt.compare(req.body.password), user.password // si utilisateur trouvé, comparaison mdp et hash
+            bcrypt.compare(sanitize(req.body.password), user.password) // si utilisateur trouvé, comparaison mdp et hash
                 .then(valid => {
                     if (!valid) {
                         return res.status(401).json({message: 'Mot de passe incorrect !'})

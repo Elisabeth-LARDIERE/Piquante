@@ -18,8 +18,9 @@ const userRoutes = require('./routes/user');
 // création de l'application express
 const app = express();
 
+
 // connexion au cluster MongoDB - masquage des données de connexion avec dotenv
-mongoose.connect('mongodb+srv://'+ process.env.DB_USER +':'+ process.env.DB_PASSWORD +'@piquante.xampq.mongodb.net/<dbname>?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://'+ process.env.DB_USER2 +':'+ process.env.DB_PASSWORD2 +'@piquante.xampq.mongodb.net/<dbname>?retryWrites=true&w=majority',
     { useNewUrlParser: true,
         useUnifiedTopology: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     next();
 });
+
 
 // transformation du corps des requêtes en objets javascript utilisables
 app.use(bodyParser.json());
