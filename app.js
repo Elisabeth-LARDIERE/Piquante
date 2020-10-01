@@ -1,10 +1,11 @@
 // APPLICATION EXPRESS
 
-// importation du framework express et des package body-parser, mongoose et path
+// importation du framework express et des package body-parser, mongoose path et helmet
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
+const helmet = require('helmet');
 
 // importation des routeurs sauce et utilisateur
 const saucesRoutes = require('./routes/sauce');
@@ -35,6 +36,9 @@ app.use(bodyParser.json());
 
 // gestion de la ressource images de manière statique
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
+// activation de la protection helmet : configuration des en-têtes HTTP de manière appropriée
+app.use(helmet());
 
 // enregistrement des routeurs sauce et utilisateur pour n'importe quelle requête effectuée vers /api/sauces et /api/auth
 app.use ('/api/sauces', saucesRoutes);
