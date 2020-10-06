@@ -97,4 +97,3 @@ exports.likeOrDislikeSauce = (req, res, next) => {
             .catch(error => res.status(404).json({error}));
     }
 }
-
