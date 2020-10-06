@@ -19,10 +19,6 @@ exports.createSauce = (req, res, next) => {
     sauce.save() // enregistrement de la nouvelle sauce dans la bdd
         .then(() => res.status(201).json({message: 'Sauce enregistrée !'}))
         .catch(error => res.status(400).json({error}))
-    sauceObject.likes = 0;
-    sauceObject.dislikes = 0;
-    sauceObject.usersLiked = [];
-    sauceObject.usersDisliked = [];
 };
 
 

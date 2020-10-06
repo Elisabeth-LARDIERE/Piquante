@@ -60,7 +60,7 @@ exports.login = (req, res, next) => {
             if (!user) {
                 return res.status(401).json({message: 'Utilisateur non trouvé !'})
             }
-            bcrypt.compare(sanitize(req.body.password), user.password) // si utilisateur trouvé, comparaison mdp et hash
+            return bcrypt.compare(sanitize(req.body.password), user.password) // si utilisateur trouvé, comparaison mdp et hash
                 .then(valid => {
                     if (!valid) {
                         return res.status(401).json({message: 'Mot de passe incorrect !'})
@@ -74,7 +74,6 @@ exports.login = (req, res, next) => {
                         )
                     });
                 })
-                .catch(error => res.status(500).json({error}));
         })
         .catch(error => res.status(500).json({error}));
 };
