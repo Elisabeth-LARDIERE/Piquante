@@ -32,7 +32,7 @@ exports.signup = (req, res, next) => {
         return res.status(401).json({message: 'Veuillez vérifier l adresse mail et le mot de passe. Le mot de passe doit contenir entre ' +
                 '8 et 60 caractères sans espace, et inclure au moins une majuscule, une minuscule et un chiffre'})
 
-        // si l'adresse mail et le mot de passe sont invalides + sanitize inputs contre injections
+    // si l'adresse mail et le mot de passe sont valides + sanitize inputs contre injections
     } else if(emailValidator.validate(sanitize(req.body.email)) && passwordSchema.validate(sanitize(req.body.password))) {
         bcrypt.hash(req.body.password, 10) // hachage du mot de passe
 
