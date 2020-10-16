@@ -1,6 +1,6 @@
 Backend de l'application Piquante de So Pekocko
 
-Technologies utilisées :
+Technologies utilisées :<br>
 Node.js<br>
 Framework Express<br>
 MongoDb
